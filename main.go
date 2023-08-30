@@ -31,8 +31,10 @@ type Reference struct {
 	Date_to_delete     string   `json:"date_to_delete"`
 }
 
+var Dbconnection string = "root:12345678@tcp(127.0.0.1:3306)/dinamic_segment"
+
 func Add(w http.ResponseWriter, r *http.Request) {
-	DB, err := sql.Open("mysql", "root:12345678@tcp(127.0.0.1:3306)/dinamic_segment")
+	DB, err := sql.Open("mysql", Dbconnection)
 	if err != nil {
 		panic(err)
 	}
@@ -75,7 +77,7 @@ func Add(w http.ResponseWriter, r *http.Request) {
 }
 
 func Addseg(w http.ResponseWriter, r *http.Request) {
-	DB, err := sql.Open("mysql", "root:12345678@tcp(127.0.0.1:3306)/dinamic_segment")
+	DB, err := sql.Open("mysql", Dbconnection)
 	if err != nil {
 		panic(err)
 	}
@@ -91,7 +93,7 @@ func Addseg(w http.ResponseWriter, r *http.Request) {
 }
 
 func Deleteseg(w http.ResponseWriter, r *http.Request) {
-	DB, err := sql.Open("mysql", "root:12345678@tcp(127.0.0.1:3306)/dinamic_segment")
+	DB, err := sql.Open("mysql", Dbconnection)
 	if err != nil {
 		panic(err)
 	}
@@ -105,7 +107,7 @@ func Deleteseg(w http.ResponseWriter, r *http.Request) {
 }
 
 func Show(w http.ResponseWriter, r *http.Request) {
-	DB, err := sql.Open("mysql", "root:12345678@tcp(127.0.0.1:3306)/dinamic_segment")
+	DB, err := sql.Open("mysql", Dbconnection)
 	if err != nil {
 		panic(err)
 	}
@@ -131,9 +133,6 @@ func Show(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(mp)
 }
 
-// curl -XPOST http://localhost:8000/add_user_in_segment -H 'Content-Type:application/json' -d {\"user\":12,\"segment_add\":[\"AUDIO\",\"IDEO\"],\"segment_delete\":[\"AUDIO\"]}
-// curl -XPOST http://127.0.0.1:7000/add_segment -H 'Content-Type:application/json' -d {\"user\":12,\"segment\":[\"AUDIO\"]}
-// curl -XPOST http://127.0.0.1:7000/add_segment -d {"user":12,"segment":"AUDIO"}
 func main() {
 	route := mux.NewRouter()
 	route.HandleFunc("/add_user_in_segment", Add).Methods("POST")
